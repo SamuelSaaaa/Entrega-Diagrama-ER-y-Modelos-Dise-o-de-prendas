@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molde de Prenda</title>
+    <style>
+        .molde-main {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 32px;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+        .molde-panel {
+            background: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 24px 18px;
+            min-width: 220px;
+            max-width: 260px;
+        }
+        .molde-panel h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #10b2e9;
+        }
+        .molde-panel label {
+            display: block;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .molde-panel select {
+            width: 100%;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #bbb;
+        }
+        .molde-prenda {
+            width: 180px;
+            height: 260px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            background: #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        #svgMolde {
+            margin-bottom: 10px;
+        }
+        @media (max-width: 700px) {
+            .molde-main {
+                flex-direction: column;
+                align-items: center;
+            }
+            .molde-prenda {
+                margin-top: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="molde-main">
+        <div class="molde-panel">
+            <h2>Personaliza tu prenda</h2>
+            <form id="form-molde" onsubmit="event.preventDefault();">
+                <label>Tipo de prenda:
+                    <select id="tipoPrenda">
+                        <option value="camiseta">Camiseta</option>
+                        <option value="pantalon">Pantalón</option>
+                        <option value="chaqueta">Chaqueta</option>
+                    </select>
+                </label>
+                <label>Marca:
+                    <select id="marca">
+                        <option>POLO</option>
+                        <option>VELEZ</option>
+                        <option>NIKE</option>
+                    </select>
+                </label>
+                <label>Color:
+                    <select id="color">
+                        <option value="#e57373">Rojo</option>
+                        <option value="#64b5f6">Azul</option>
+                        <option value="#81c784">Verde</option>
+                        <option value="#fff176">Amarillo</option>
+                    </select>
+                </label>
+                <label>Talla:
+                    <select id="talla">
+                        <option>S</option>
+                        <option>M</option>
+                        <option>L</option>
+                        <option>XL</option>
+                    </select>
+                </label>
+                <label>Tipo de tela:
+                    <select id="tela">
+                        <option>Algodón</option>
+                        <option>Poliéster</option>
+                        <option>Lino</option>
+                        <option>Seda</option>
+                    </select>
+                </label>
+            </form>
+        </div>
+        <div class="molde-prenda" id="moldePrenda">
+            <span id="svgMolde"></span>
+            <div id="infoMolde">Selecciona tus opciones</div>
+        </div>
+    </div>
+    <script>
+        function obtenerSVG(tipo, color) {
+            if (tipo === "camiseta") {
+                // SVG de camiseta más realista
+                return `<svg width="120" height="150" viewBox="0 0 120 150">
+                    <path d="M20,30 Q10,40 30,50 L30,120 Q30,140 60,140 Q90,140 90,120 L90,50 Q110,40 100,30 L80,20 Q70,10 60,20 Q50,10 40,20 Z"
+                        fill="${color}" stroke="#888" stroke-width="2"/>
+                    <line x1="60" y1="20" x2="60" y2="140" stroke="#bbb" stroke-width="2"/>
+                </svg>`;
+            }
+            if (tipo === "pantalon") {
+                // SVG de pantalón más realista
+                return `<svg width="100" height="150" viewBox="0 0 100 150">
+                    <path d="M30,20 L70,20 L80,140 L60,140 L55,60 L45,60 L40,140 L20,140 Z"
+                        fill="${color}" stroke="#888" stroke-width="2"/>
+                    <line x1="50" y1="20" x2="55" y2="140" stroke="#bbb" stroke-width="2"/>
+                    <line x1="50" y1="20" x2="45" y2="140" stroke="#bbb" stroke-width="2"/>
+                </svg>`;
+            }
+            if (tipo === "chaqueta") {
+                // SVG de chaqueta más realista
+                return `<svg width="120" height="150" viewBox="0 0 120 150">
+                    <path d="M30,30 Q10,50 30,70 L40,140 Q60,150 80,140 L90,70 Q110,50 90,30 L80,20 Q70,10 60,20 Q50,10 40,20 Z"
+                        fill="${color}" stroke="#888" stroke-width="2"/>
+                    <rect x="55" y="30" width="10" height="110" fill="#fff" stroke="#888" stroke-width="1"/>
+                </svg>`;
+            }
+            return "";
+        }
+
+        function actualizarMolde() {
+            const tipo = document.getElementById('tipoPrenda').value;
+            const marca = document.getElementById('marca').value;
+            const color = document.getElementById('color').value;
+            const talla = document.getElementById('talla').value;
+            const tela = document.getElementById('tela').value;
+            document.getElementById('svgMolde').innerHTML = obtenerSVG(tipo, color);
+            document.getElementById('infoMolde').textContent = `${marca} | ${talla} | ${tela}`;
+        }
+
+        // Detecta cambios en todos los selectores y actualiza el molde
+        document.querySelectorAll('select').forEach(sel => {
+            sel.addEventListener('change', actualizarMolde);
+        });
+
+        // Inicializa el molde al cargar la página
+        window.addEventListener('DOMContentLoaded', actualizarMolde);
+    </script>
+</body>
+</html>
